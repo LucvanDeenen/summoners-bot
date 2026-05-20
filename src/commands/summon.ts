@@ -8,11 +8,10 @@ import {
 } from "discord.js";
 import { Command } from "../types";
 
-const greetings: string[] = JSON.parse(
-  readFileSync(join(__dirname, "../../data/greetings.json"), "utf-8")
-);
+const GREETINGS_PATH = join(__dirname, "../../data/greetings.json");
 
 const DM_MESSAGE = (summoner: string): string => {
+  const greetings: string[] = JSON.parse(readFileSync(GREETINGS_PATH, "utf-8"));
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
   return `"${greeting}" - ${summoner}`;
 };
