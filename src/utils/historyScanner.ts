@@ -3,17 +3,16 @@ import { Collection, GuildTextBasedChannel, Message } from "discord.js";
 export async function scanHistoricalPlays(
   channel: GuildTextBasedChannel,
   trackId: string,
-  beforeMessageId: string
+  beforeMessageId?: string
 ): Promise<Record<string, number>> {
   const trackPattern = new RegExp(`open\\.spotify\\.com/track/${trackId}(?:[/?]|$)`);
   const requests: Record<string, number> = {};
-  let before: string = beforeMessageId;
+  let before: string | undefined = beforeMessageId;
 
   while (true) {
-    const batch: Collection<string, Message> = await channel.messages.fetch({
-      limit: 100,
-      before,
-    });
+    const batch: Collection<string, Message> = await channel.messages.fetch(
+      before ? { limit: 100, before } : { limit: 100 }
+    );
 
     if (batch.size === 0) break;
 

@@ -1,27 +1,10 @@
 import { Message } from "discord.js";
 import { BotClient } from "../client";
-import { BotEvent, SongEntry } from "../types";
-import { isNewTrack, setRequests, incrementUserRequest, totalRequests } from "../utils/songTracker";
+import { BotEvent } from "../types";
+import { isNewTrack, setRequests, incrementUserRequest, totalRequests, buildScoreboard } from "../utils/songTracker";
 import { scanHistoricalPlays } from "../utils/historyScanner";
 
 const SPOTIFY_REGEX = /open\.spotify\.com\/track\/([A-Za-z0-9]+)/;
-const MEDALS = ["🥇", "🥈", "🥉"];
-
-function buildScoreboard(entry: SongEntry): string {
-  const total = totalRequests(entry);
-  const sorted = Object.entries(entry.requests).sort(([, a], [, b]) => b - a);
-
-  const lines = sorted.map(([userId, count], i) => {
-    const medal = MEDALS[i] ?? "▪️";
-    const times = count === 1 ? "1 time" : `${count} times`;
-    return `${medal} <@${userId}> — ${times}`;
-  });
-
-  return [
-    `🎵 This track has been requested **${total} times** in this server!`,
-    ...lines,
-  ].join("\n");
-}
 
 const event: BotEvent = {
   name: "messageCreate",

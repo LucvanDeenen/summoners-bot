@@ -52,6 +52,24 @@ export function setRequests(
   saveCounts(counts);
 }
 
+const MEDALS = ["🥇", "🥈", "🥉"];
+
+export function buildScoreboard(entry: SongEntry): string {
+  const total = totalRequests(entry);
+  const sorted = Object.entries(entry.requests).sort(([, a], [, b]) => b - a);
+
+  const lines = sorted.map(([userId, count], i) => {
+    const medal = MEDALS[i] ?? "▪️";
+    const times = count === 1 ? "1 time" : `${count} times`;
+    return `${medal} <@${userId}> — ${times}`;
+  });
+
+  return [
+    `🎵 This track has been requested **${total} times** in this server!`,
+    ...lines,
+  ].join("\n");
+}
+
 export function incrementUserRequest(
   trackId: string,
   trackUrl: string,
