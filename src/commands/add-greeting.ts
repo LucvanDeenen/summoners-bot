@@ -11,20 +11,12 @@ const data = new SlashCommandBuilder()
   .addStringOption((option) =>
     option
       .setName("greeting")
-      .setDescription("The greeting text — use {summoner} as a placeholder for the summoner's name")
+      .setDescription("The greeting text — will be sent as: \"<greeting>\" - <your name>")
       .setRequired(true)
   );
 
 async function execute(interaction: ChatInputCommandInteraction): Promise<void> {
   const greeting = interaction.options.getString("greeting", true);
-
-  if (!greeting.includes("{summoner}")) {
-    await interaction.reply({
-      content: "Your greeting must include `{summoner}` as a placeholder for the summoner's name.",
-      ephemeral: true,
-    });
-    return;
-  }
 
   const greetings: string[] = JSON.parse(readFileSync(GREETINGS_PATH, "utf-8"));
   greetings.push(greeting);

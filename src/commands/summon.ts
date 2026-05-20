@@ -13,8 +13,8 @@ const greetings: string[] = JSON.parse(
 );
 
 const DM_MESSAGE = (summoner: string): string => {
-  const template = greetings[Math.floor(Math.random() * greetings.length)];
-  return template.replace("{summoner}", summoner);
+  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  return `"${greeting}" - ${summoner}`;
 };
 
 const data = new SlashCommandBuilder()
