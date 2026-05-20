@@ -5,6 +5,7 @@ import { loadEvents } from "./handlers/eventHandler";
 
 // Commands — add new commands here
 import { summon } from "./commands/summon";
+import { addGreeting } from "./commands/add-greeting";
 
 // Events — add new events here
 import clientReady from "./events/clientReady";
@@ -13,7 +14,7 @@ import messageCreate from "./events/messageCreate";
 
 const client = new BotClient();
 
-loadCommands(client, [summon]);
+loadCommands(client, [summon, addGreeting]);
 loadEvents(client, [clientReady, interactionCreate, messageCreate]);
 
 client.on("error", (err) => console.error("Client error:", err));

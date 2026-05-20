@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+import { join } from "path";
 import {
   AutocompleteInteraction,
   ChatInputCommandInteraction,
@@ -6,8 +8,14 @@ import {
 } from "discord.js";
 import { Command } from "../types";
 
-const DM_MESSAGE = (summoner: string) =>
-  `Hey! **${summoner}** is summoning you — come join us in Discord! 👋`;
+const greetings: string[] = JSON.parse(
+  readFileSync(join(__dirname, "../../data/greetings.json"), "utf-8")
+);
+
+const DM_MESSAGE = (summoner: string): string => {
+  const template = greetings[Math.floor(Math.random() * greetings.length)];
+  return template.replace("{summoner}", summoner);
+};
 
 const data = new SlashCommandBuilder()
   .setName("summon")
@@ -52,7 +60,7 @@ async function execute(interaction: ChatInputCommandInteraction): Promise<void> 
 
   try {
     await target.send(DM_MESSAGE(summoner));
-    await interaction.reply(`Summoned **${target.displayName}**! They've been sent a DM.`);
+    await interaction.reply(`Enne **${target.displayName}**!`);
   } catch {
     await interaction.reply({
       content: `Could not DM **${target.displayName}** — they may have DMs disabled.`,
