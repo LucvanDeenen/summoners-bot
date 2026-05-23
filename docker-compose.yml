@@ -1,0 +1,8 @@
+services:
+  summon-bot:
+    image: ghcr.io/lucvandeenen/summoners-bot:latest
+    restart: unless-stopped
+    env_file:
+      - /home/dedeen/app-data/summon-bot/.env
+    volumes:
+      - /home/dedeen/app-data/summon-bot/data:/app/data
